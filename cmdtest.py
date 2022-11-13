@@ -25,10 +25,10 @@ def FormatFileText(Data):
     CurrentDT = CurrentD + " " + CurrentT
 
     #Text File Format
-    TextString = CurrentDT + ": " + "min = " + str(Data[0]) + " , " + "max = " + str(Data[1]) + " , " + "avr = " + str(Data[2]) + "\n"
+    TextString = f"{CurrentDT}: min = {str(Data[0])} , max = {str(Data[1])} , avr = {str(Data[2])} \n"
 
     #CSV File Format
-    CSVString = CurrentD+","+CurrentT+","+str(Data[0])+","+str(Data[1])+","+str(Data[2])+"\n"
+    CSVString = f"{CurrentD},{CurrentT},{str(Data[0])},{str(Data[1])},{str(Data[2])},\n"
 
     #appends to Text File
     with open("InternetTests.txt" , "a") as TestHistory:
@@ -56,16 +56,19 @@ def runConnectionTest(delay):
         #last line contain ping speed timing
         LastLine = Output[-1]
 
-        #gets data into array using regular expression
-        DataSet = re.findall(r'\d+', LastLine)
+        if LastLine != "Ping request could not find host google.com. Please check the name and try again.":
+            #gets data into array using regular expression
+            DataSet = re.findall(r'\d+', LastLine)
 
-        FormatFileText(DataSet)
+            FormatFileText(DataSet)
 
-        #deletes tmp file
-        os.remove("tmp.txt")
+            #deletes tmp file
+            os.remove("tmp.txt")
 
-        #repeates every n seconds
-        time.sleep(delay)
+            #repeates every n seconds
+            time.sleep(delay)
+        else:
+            FormatFileText["0","0","0"]
 
 
 
